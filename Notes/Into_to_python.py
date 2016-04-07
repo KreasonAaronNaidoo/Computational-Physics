@@ -69,5 +69,25 @@ for k in range(len(aa)):
 # NB the print command leaves a line (like println in java)
 # It's easier to use double quotes for strings (for the cases of words with apostropes)
 
+# x**3 is x to the power 3
+
+# maths in python using imported libraries
+
+import math
+
+for z in range(10):
+    print math.sin(z)
+
+
+# we can also import only the packages of the library that we need
+
+from math import sin
+
+for z in range(10):
+    print math.sin(z)
+
+# if we use from math import *, we don't need to have math. in front of sin
+
+
 
 
