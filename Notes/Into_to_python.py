@@ -88,6 +88,14 @@ for z in range(10):
 
 # if we use from math import *, we don't need to have math. in front of sin
 
+import numpy
+
+a = numpy.array([1,2,3])
+
+for d in range(len(a)):
+    print a[d]
+
+
 
 
 
