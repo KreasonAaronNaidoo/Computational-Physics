@@ -106,7 +106,20 @@ plt.plot((0, 2*np.pi), (0, 0), '-k')
 plt.plot(X, C)
 plt.plot(X, S)
 
-plt.show()
+# this will show our numpy graph
+#plt.show()
+
+
+# if statments
+
+for x in range (11):
+    if (x%2 == 0):
+        print x
+
+# this would print only the even numbers from 0 to 10
+
+
+# numpy arrays
 
 
 
