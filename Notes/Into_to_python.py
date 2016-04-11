@@ -88,13 +88,25 @@ for z in range(10):
 
 # if we use from math import *, we don't need to have math. in front of sin
 
-import numpy
+#numpy example
+import numpy as np
 
-a = numpy.array([1,2,3])
+a = np.array([1,2,3])
 
 for d in range(len(a)):
     print a[d]
 
+
+#matplotlib example
+import matplotlib.pyplot as plt
+
+X = np.linspace(0, 2*np.pi, 256, endpoint=True)
+C, S = np.cos(X), np.sin(X)
+plt.plot((0, 2*np.pi), (0, 0), '-k')
+plt.plot(X, C)
+plt.plot(X, S)
+
+plt.show()
 
 
 
