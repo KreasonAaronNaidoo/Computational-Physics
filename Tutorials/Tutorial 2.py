@@ -36,7 +36,7 @@ print "Question 2"
 print
 print
 
-print "The actual value of the intergral of cos(x) between 0 and pi/2 is 1"
+print "The actual value of the intergral of cos(x) between 0 and pi/2 is -1"
 print
 print
 
