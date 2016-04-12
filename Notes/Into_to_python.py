@@ -2,6 +2,8 @@
 
 print "hello world"
 
+''' python block comment
+
 # integers.
 
 x = 5
@@ -98,29 +100,53 @@ for d in range(len(a)):
 
 
 #matplotlib example
+import numpy as np
 import matplotlib.pyplot as plt
 
-X = np.linspace(0, 2*np.pi, 256, endpoint=True)
-C, S = np.cos(X), np.sin(X)
-plt.plot((0, 2*np.pi), (0, 0), '-k')
-plt.plot(X, C)
-plt.plot(X, S)
+X = np.linspace(0, 30, 256, endpoint=True) #determins the jumps in X, giving us a smooth curve
+plt.plot((0, 30), (0, 0), '-k') #this is just a y axis
 
-# this will show our numpy graph
-#plt.show()
+plt.plot(X, np.sin(X))
+plt.plot(X, np.cos(X))
+
+plt.ylabel("Y Values")
+plt.xlabel("X Values")
+
+#this will show our numpy graph
+plt.show()
 
 
 # if statments
 
-for x in range (11):
-    if (x%2 == 0):
-        print x
+#for x in range (11):
+ #   if (x%2 == 0):
+  #      print x
 
 # this would print only the even numbers from 0 to 10
 
 
 # numpy arrays
 
+import numpy as np
 
+x = np.arange(10) #an array with numbers 0 to 9
 
+'''
+
+# Functions in python (methods)
+# Gaussian std gen form  ae^(-(x-x0)^2/2sigma^2)
+
+import numpy as np
+
+import Gauss_Example as ga
+
+import matplotlib.pyplot as plt
+
+X = np.arange(-5,5,0.001)
+
+plt.plot(X, ga.gauss(X, -1, 1, 1))
+plt.plot(X, ga.gauss(X,amp = 1, x0 = 1,sigma = 1))
+plt.plot(X, ga.gauss(X))
+
+plt.show()
 
