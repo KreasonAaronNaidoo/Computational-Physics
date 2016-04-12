@@ -58,7 +58,7 @@ print
 print "The value of the intergral of cos(x) between 0 and pi/2 for 1000000 points is: ", intergrate(x6)
 print
 
-print "As is evident, a higher number of points corrilates to a higher accuracy in the calculation "
+print "As is evident, a higher number of points correlates to a higher accuracy in the calculation "
 
 print
 print
