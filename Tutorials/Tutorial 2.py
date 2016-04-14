@@ -41,7 +41,7 @@ def integrate(low, high, points, function):
     sum = 0
 
     for i in range(len(x)):
-        sum = sum + (function(x[i])) * step
+        sum = sum + function(x[i]) * step
 
     return sum
 

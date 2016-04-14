@@ -1,5 +1,11 @@
 # this is my first project file.
 
+import numpy as np
+
+import Gauss_Example as ga
+
+from  matplotlib import pyplot as plt
+
 print "hello world"
 
 ''' python block comment
@@ -131,22 +137,21 @@ import numpy as np
 
 x = np.arange(10) #an array with numbers 0 to 9
 
-'''
+
 
 # Functions in python (methods)
 # Gaussian std gen form  ae^(-(x-x0)^2/2sigma^2)
 
-import numpy as np
 
-import Gauss_Example as ga
-
-import matplotlib.pyplot as plt
-
-X = np.arange(-5,5,0.001)
-
+X = np.arange(-5,5,0.0001)
 plt.plot(X, ga.gauss(X, -1, 1, 1))
 plt.plot(X, ga.gauss(X,amp = 1, x0 = 1,sigma = 1))
 plt.plot(X, ga.gauss(X))
 
 plt.show()
 
+'''
+
+# Simpsons Rule
+
+#integral = dx*(1/6 Y0 + 2/3 Yodd +1/3 Yeven + 1/6 Ylast)
