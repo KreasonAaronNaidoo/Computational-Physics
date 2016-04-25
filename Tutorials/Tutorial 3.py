@@ -46,3 +46,15 @@ x1 = ga.gauss(np.arange(-100,100, 1))
 
 plt.plot(cor(x1, x1))
 plt.show()
+
+
+#Question 3
+
+func = cor(conv (x1, 2),conv (x1, 2)) #here the arb shift is 2
+
+plt.plot(func)
+plt.show()
+
+
+
+
