@@ -138,7 +138,7 @@ import numpy as np
 x = np.arange(10) #an array with numbers 0 to 9
 
 
-
+'''
 # Functions in python (methods)
 # Gaussian std gen form  ae^(-(x-x0)^2/2sigma^2)
 
@@ -150,7 +150,7 @@ plt.plot(X, ga.gauss(X))
 
 plt.show()
 
-'''
+
 
 # Simpsons Rule
 
