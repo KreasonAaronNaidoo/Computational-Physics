@@ -138,7 +138,6 @@ import numpy as np
 x = np.arange(10) #an array with numbers 0 to 9
 
 
-'''
 # Functions in python (methods)
 # Gaussian std gen form  ae^(-(x-x0)^2/2sigma^2)
 
@@ -150,8 +149,35 @@ plt.plot(X, ga.gauss(X))
 
 plt.show()
 
+'''
+
+#Dictionaries : use a key and a value
+
+wavelengths = {}
+
+wavelengths["blue"] = 400
+
+wavelengths["red"] = 700
+
+wavelengths["yellow"] = 600
+
+wavelengths["green"] = 500
 
 
-# Simpsons Rule
+print wavelengths["blue"]
 
-#integral = dx*(1/6 Y0 + 2/3 Yodd +1/3 Yeven + 1/6 Ylast)
+
+#dictionaries can contain strings and numbers
+
+print wavelengths.keys()
+
+
+print
+print
+
+
+cubes = {}
+
+for i in range(11):
+    cubes[i] = i**3
+    print i, " :  " ,cubes[i]
