@@ -8,6 +8,8 @@ import Gauss_Example as ga
 
 #Question 1
 
+#the number of passes for an fft is the log base 2 of the number of data elements
+
 print "Question 1"
 print
 print
@@ -21,19 +23,26 @@ def conv (array, shift):
 
     mul = if1*if2
 
-    plt.plot(x,mul)
-    plt.show()
 
-    return np.fft.ifft(mul)
+
+    return np.real(np.fft.ifft(mul))
 
 
 x = np.arange(-100,100, 1)
-conv(x, 0)
+
+plt.plot(x,conv(x, 0))
+plt.show()
 
 #Question 2
 
 def cor (array1, array2):
 
-    ift
+    if1 = np.fft.fft(array1)
+    if2 = np.fft.fft(array2)
 
-    return 0
+    return np.fft.ifft(if1*np.conjugate(if2))
+
+x1 = ga.gauss(np.arange(-100,100, 1))
+
+plt.plot(cor(x1, x1))
+plt.show()
