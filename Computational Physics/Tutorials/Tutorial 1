@@ -1,0 +1,7 @@
+
+1)  ls -ltr
+
+2)  sed -n '16,25p' filename.txt
+
+3)  man python
+
