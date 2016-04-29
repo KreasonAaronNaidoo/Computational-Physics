@@ -7,10 +7,9 @@ class NBody:
 
     def __init__(self, N = 0):
 
-        self.N = N
         self.options = {} #dictionary of constants
 
-        self.options["N"] = self.N
+        self.options["N"] = N
         self.options["G"] = 6.67300 * 10 ** -11
 
         self.part = [] #list of all particals
