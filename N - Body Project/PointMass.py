@@ -13,4 +13,7 @@ class PointMass:
         self.vx = 0 # x velocity
         self.vy = 0 # y velocity
 
+        self.ax = 0 # x acceleration
+        self.bx = 0 # b acceleration
+
 
