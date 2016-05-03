@@ -10,6 +10,9 @@ class PointMass:
         self.x = x # x position
         self.y = y # y position
 
+        self.fx = 0;
+        self.fy = 0;
+
         self.vx = 0 # x velocity
         self.vy = 0 # y velocity
 
