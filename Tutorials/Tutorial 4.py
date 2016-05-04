@@ -4,8 +4,12 @@ class complex:
 
     def __init__(self, r, i): #we "declare" our varibles for the class in the constructior, and pass values to them if we like.
 
-        self.real = r
-        self.img = i
+        self.real = 0.0
+        self.img = 0.0
+
+        self.real += r
+        self.img += i
+
 
 
 
@@ -73,9 +77,13 @@ class complex:
 
 
 
+
+# Unit testing
+
 a = complex (3,4)
 b = complex(5,8)
-
+print
+print
 print "a = ",a.real,"+i",a.img
 print "b = ",b.real,"+i",b.img
 
@@ -88,4 +96,11 @@ print "b - a : ", (b - a).real, "+i",(b - a).img
 print
 print "a * b : ", (b * a).real, "+i",(b * a).img
 print
-print "b / a : ", (b / a).real, "+i",(b / a).img
+
+if (a != 0):
+    print "b / a : ", (b / a).real, "+i",(b / a).img
+else:
+    print "Cannot divide by 0"
+
+
+

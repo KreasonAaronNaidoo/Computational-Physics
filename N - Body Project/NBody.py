@@ -54,6 +54,8 @@ class N_Body:
 
                     sum = sum + self.pot_energy(self.part[i],self.part[j])
 
+                    sum = sum/2
+
 
         return sum
 
