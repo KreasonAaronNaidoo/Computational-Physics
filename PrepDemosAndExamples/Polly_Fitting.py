@@ -45,7 +45,7 @@ def get_poly_weights(order):
 
 if __name__ == "__main__":
 
-    for ord in np.arange(2,3,1):
+    for ord in np.arange(0,10,1):
 
         weights = get_poly_weights(ord)
         print

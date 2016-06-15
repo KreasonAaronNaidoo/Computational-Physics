@@ -14,7 +14,7 @@ def myFFT(vec):
     myEvenVec = vec[0::2]
     myOddVec = vec[1::2]
 
-    #the new length of the even / off vecs is nn = n/2 (half the original)
+    #the new length of the even / odd vecs is nn = n/2 (half the original)
     nn = n/2
 
     #we need to define unity in complec numbers (i)
