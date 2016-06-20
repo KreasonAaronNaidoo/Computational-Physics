@@ -3,7 +3,7 @@
 import numpy as np
 
 
-class PointMass:
+class particle:
 
     def __init__(self, m = 1, x = 0, y = 0):
 
