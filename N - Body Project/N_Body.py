@@ -26,6 +26,9 @@ class N_Body:
 
         self.potential_matrix = np.zeros((self.Grid_Size, self.Grid_Size)) # this stores the potential matrix
 
+        self.softening_potential = (-1*self.G)/ 2**(0.5)
+        #The cut of radius before we use the softening potential is sqrt(2)
+
 
     def populate_real_space_matrix(self):
 
@@ -42,7 +45,7 @@ class N_Body:
 
     def print_test(self):
 
-        print self.density_matrix
+        print self.potential_matrix
 
 
     def generate_density_matrix(self):
@@ -60,9 +63,11 @@ class N_Body:
 
     def generate_potential_matrix(self):
 
+        fft1 = np.fft.fft(self.density_matrix)
 
+        self.potential_matrix = np.real(np.fft.ifft(fft1 * self.softening_potential))
+        # we use the fact that the fft of a constant is the same value
 
-        return 0
 
     def update_particle_positions(self):
         #call solve force, velocity and position per particle

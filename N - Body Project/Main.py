@@ -12,6 +12,8 @@ if __name__ == "__main__":
 
     system.generate_density_matrix()
 
+    system.generate_potential_matrix()
+
     system.print_test()
 
 
