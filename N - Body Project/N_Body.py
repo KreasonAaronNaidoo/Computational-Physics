@@ -2,6 +2,8 @@
 import particle
 import numpy as np
 import random as rand
+from matplotlib import pyplot as plt
+
 
 
 class N_Body:
@@ -20,7 +22,7 @@ class N_Body:
 
         #Create the grid with equal spacing
 
-        self.real_space_matrix = [] # this is where the particles will live
+        self.real_space_list = [] # this is where the particles will live
 
         self.density_matrix = np.zeros(shape=(self.Grid_Size, self.Grid_Size))  # this stores the density matrix
 
@@ -40,7 +42,7 @@ class N_Body:
 
 
 
-            self.real_space_matrix.append(temp_particle)
+            self.real_space_list.append(temp_particle)
             #adds the particle to the list of particles at that point in the real space matrix
 
     def print_test(self):
@@ -50,10 +52,15 @@ class N_Body:
 
     def generate_density_matrix(self):
 
-         for i in range(len(self.real_space_matrix)):
+         for i in range(len(self.real_space_list)):
 
-            round_x = int(round(self.real_space_matrix[i].position_x))
-            round_y = int(round(self.real_space_matrix[i].position_y))
+            round_x = int(round(self.real_space_list[i].position_x))
+            round_y = int(round(self.real_space_list[i].position_y))
+
+
+            self.real_space_list[i].round_x = round_x
+            self.real_space_list[i].round_y = round_y
+
 
             self.density_matrix[round_x][round_y] = self.density_matrix[round_x][round_y] + 1
             #This creates the density matrix
@@ -69,22 +76,58 @@ class N_Body:
         # we use the fact that the fft of a constant is the same value
 
 
+
     def update_particle_positions(self):
-        #call solve force, velocity and position per particle
+
+        for i in range(0, len(self.real_space_list)):
+
+            # This sets up the force
+
+            current_x = self.real_space_list[i].round_x
+            current_y = self.real_space_list[i].round_y
+
+
+            if(current_x == 0):
+                ux_left = 0
+            else:
+                ux_left = self.potential_matrix[current_x - 1][current_y]
+
+
+            if(current_x == self.Grid_Size -1):
+                ux_right = 0
+            else:
+                ux_right = self.potential_matrix[current_x + 1][current_y]
 
 
 
-        return 0
+            if (current_y == 0):
+                uy_up = 0
+            else:
+                uy_up = self.potential_matrix[current_x][current_y - 1]
+
+
+            if (current_y == self.Grid_Size - 1):
+                uy_down = 0
+            else:
+                uy_down =  self.potential_matrix[current_x][current_y + 1]
 
 
 
+            self.real_space_list[i].solve_force(ux_left, ux_right, uy_up, uy_down)
+
+
+            #This sets up the velocity
+
+            self.real_space_list[i].solve_velocity(self.dt)
+
+
+            #This sets up the position
+
+            self.real_space_list[i].solve_position(self.dt)
 
 
 
-
-
-
-
+    def update_graphics(self):
 
 
 

@@ -12,6 +12,9 @@ class particle:
         self.position_x = x # x position
         self.position_y = y # y position
 
+        self.round_x = 0    #discrete positions in the density matrix
+        self.round_y = 0
+
         self.force_x = 0 # x force
         self.force_y = 0 # y force
 
@@ -26,12 +29,10 @@ class particle:
 
 
 
-    def solve_force(self, ux_left, ux_right, uy_left, uy_right):
-
-
+    def solve_force(self, ux_left, ux_right, uy_up, uy_down):
 
         self.force_x = -1 * (ux_left - ux_right) / 2
-        self.force_y = -1 * (uy_left - uy_right) / 2
+        self.force_y = -1 * (uy_up - uy_down) / 2
 
         self.acceleration_x = self.force_x / self.mass
         self.acceleration_y = self.force_y / self.mass

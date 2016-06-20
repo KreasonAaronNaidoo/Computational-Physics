@@ -14,6 +14,13 @@ if __name__ == "__main__":
 
     system.generate_potential_matrix()
 
+    system.update_particle_positions()
+
     system.print_test()
 
 
+
+    print
+    print
+
+    print system.Grid_Size
