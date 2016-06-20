@@ -5,7 +5,7 @@ import numpy as np
 
 class PointMass:
 
-    def __init__(self, m, x, y,):
+    def __init__(self, m = 1, x = 0, y = 0):
 
         self.mass = m
 
@@ -30,7 +30,7 @@ class PointMass:
 
 
 
-        self.force_x = -1 * (ux_left - ux_right)/2
+        self.force_x = -1 * (ux_left - ux_right) / 2
         self.force_y = -1 * (uy_left - uy_right) / 2
 
         self.acceleration_x = self.force_x / self.mass

@@ -87,7 +87,7 @@ for t in np.arange(0, t_max, dt):
     potential = G*1.0/r
     kinetic = 0.5*(m_x0*(vx_x0**2 + vy_x0**2) +  m_x1*(vx_x1**2 + vy_x1**2))
 
-    print "Kinetic energy: ", kinetic, " Potential energy: ", potential, " Total mechanical energy: ", kinetic + potential
+   # print "Kinetic energy: ", kinetic, " Potential energy: ", potential, " Total mechanical energy: ", kinetic + potential
 
 
     plt.clf()
