@@ -24,4 +24,3 @@ if __name__ == "__main__":
 
         #plt.plot(system.real_space_list[i].position_x,system.real_space_list[i].position_y, "o")
 
-    print "First run over"
