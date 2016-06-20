@@ -36,6 +36,7 @@ class N_Body:
 
 
 
+
     def populate_real_space_matrix(self):
 
         for x in range(0, self.Number_of_particles):
@@ -43,8 +44,6 @@ class N_Body:
             temp_y = rand.uniform(0, 100)
 
             temp_particle = particle.particle(1, temp_x, temp_y) # we are using the uniform mass of 1
-
-
 
             self.real_space_list.append(temp_particle)
             #adds the particle to the list of particles at that point in the real space matrix
@@ -176,16 +175,16 @@ class N_Body:
         if (self.periodic == False):
 
             if (self.real_space_list[i].position_x < 0):
-                self.real_space_list[i].pop
+                del self.real_space_list[i]
 
             if (self.real_space_list[i].position_x > self.Grid_Size):
-                self.real_space_list[i].pop
+                del self.real_space_list[i]
 
             if (self.real_space_list[i].position_y < 0):
-                self.real_space_list[i].pop
+                del self.real_space_list[i]
 
             if (self.real_space_list[i].position_y > self.Grid_Size):
-                self.real_space_list[i].pop
+                del self.real_space_list[i]
 
 
         self.real_space_list[i].solve_position(self.dt)
@@ -193,5 +192,3 @@ class N_Body:
 
 
 
-    def update_graphics(self):
-        print
