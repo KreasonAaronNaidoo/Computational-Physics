@@ -9,7 +9,7 @@ from matplotlib import pyplot as plt
 class N_Body:
 
 
-    def __init__(self):
+    def __init__(self, mode = 1):
 
 
         self.Number_of_particles = 100000  #Number of particles
@@ -34,19 +34,37 @@ class N_Body:
         self.periodic = False
         #Change this value to change to the system to periodic
 
+        self.mode = mode
+        #mode == 1 : single stationary particle
+        #mode == 2 : 2 stationary particles
+        #mode == 3 : Full N-Body simulation
+
 
 
 
     def populate_real_space_matrix(self):
 
-        for x in range(0, self.Number_of_particles):
-            temp_x = rand.uniform(0, 100)
-            temp_y = rand.uniform(0, 100)
 
-            temp_particle = particle.particle(1, temp_x, temp_y) # we are using the uniform mass of 1
+        if(self.mode == 1):
+            self.real_space_list.append(particle.particle(1, self.Grid_Size/2, self.Grid_Size/2))
 
-            self.real_space_list.append(temp_particle)
-            #adds the particle to the list of particles at that point in the real space matrix
+        if(self.mode == 2):
+            self.real_space_list.append(particle.particle(1, self.Grid_Size / 3, self.Grid_Size / 2))
+            self.real_space_list.append(particle.particle(1, self.Grid_Size - self.Grid_Size/3, self.Grid_Size / 2))
+
+        if(self.mode == 3):
+
+            for x in range(0, self.Number_of_particles):
+                temp_x = rand.uniform(0, 100)
+                temp_y = rand.uniform(0, 100)
+
+                temp_particle = particle.particle(1, temp_x, temp_y) # we are using the uniform mass of 1
+
+                self.real_space_list.append(temp_particle)
+                #adds the particle to the list of particles at that point in the real space matrix
+
+
+
 
     def print_test(self):
 
