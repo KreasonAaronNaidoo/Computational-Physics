@@ -31,6 +31,10 @@ class N_Body:
         self.softening_potential = (-1*self.G)/ 2**(0.5)
         #The cut of radius before we use the softening potential is sqrt(2)
 
+        self.periodic = False
+        #Change this value to change to the system to periodic
+
+
 
     def populate_real_space_matrix(self):
 
@@ -86,53 +90,108 @@ class N_Body:
             current_x = self.real_space_list[i].round_x
             current_y = self.real_space_list[i].round_y
 
+            if(self.periodic == False):
 
-            if(current_x == 0):
-                ux_left = 0
+
+                if(current_x == 0):
+                  ux_left = 0
+                else:
+                   ux_left = self.potential_matrix[current_x - 1][current_y]
+
+
+                if(current_x == self.Grid_Size -1):
+                    ux_right = 0
+                else:
+                    ux_right = self.potential_matrix[current_x + 1][current_y]
+
+
+
+                if (current_y == 0):
+                    uy_up = 0
+                else:
+                    uy_up = self.potential_matrix[current_x][current_y - 1]
+
+
+                if (current_y == self.Grid_Size - 1):
+                    uy_down = 0
+                else:
+                    uy_down = self.potential_matrix[current_x][current_y + 1]
+
+
+
+        if (self.periodic == True):
+
+
+            if (current_x == 0):
+                ux_left = self.potential_matrix[self.Grid_Size][current_y]
             else:
                 ux_left = self.potential_matrix[current_x - 1][current_y]
 
 
-            if(current_x == self.Grid_Size -1):
-                ux_right = 0
+            if (current_x == self.Grid_Size - 1):
+                ux_right = self.potential_matrix[0][current_y]
             else:
                 ux_right = self.potential_matrix[current_x + 1][current_y]
 
 
 
             if (current_y == 0):
-                uy_up = 0
+                uy_up = self.potential_matrix[current_x][self.Grid_Size]
             else:
                 uy_up = self.potential_matrix[current_x][current_y - 1]
 
 
             if (current_y == self.Grid_Size - 1):
-                uy_down = 0
+                uy_down = self.potential_matrix[current_x][0]
             else:
-                uy_down =  self.potential_matrix[current_x][current_y + 1]
+                uy_down = self.potential_matrix[current_x][current_y + 1]
 
 
 
-            self.real_space_list[i].solve_force(ux_left, ux_right, uy_up, uy_down)
+
+        self.real_space_list[i].solve_force(ux_left, ux_right, uy_up, uy_down)
+
+        # This sets up the velocity
+
+        self.real_space_list[i].solve_velocity(self.dt)
+
+        # This sets up the position
 
 
-            #This sets up the velocity
+        if (self.periodic == True):
 
-            self.real_space_list[i].solve_velocity(self.dt)
+            if(self.real_space_list[i].position_x < 0 ):
+                self.real_space_list[i].position_x = self.Grid_Size - 0.1
+
+            if (self.real_space_list[i].position_x > self.Grid_Size):
+                self.real_space_list[i].position_x = 0.1
+
+            if (self.real_space_list[i].position_y < 0):
+                self.real_space_list[i].position_y = self.Grid_Size - 0.1
+
+            if (self.real_space_list[i].position_y > self.Grid_Size):
+                self.real_space_list[i].position_y = 0.1
 
 
-            #This sets up the position
+        if (self.periodic == False):
 
-            self.real_space_list[i].solve_position(self.dt)
+            if (self.real_space_list[i].position_x < 0):
+                self.real_space_list[i].pop
+
+            if (self.real_space_list[i].position_x > self.Grid_Size):
+                self.real_space_list[i].pop
+
+            if (self.real_space_list[i].position_y < 0):
+                self.real_space_list[i].pop
+
+            if (self.real_space_list[i].position_y > self.Grid_Size):
+                self.real_space_list[i].pop
+
+
+        self.real_space_list[i].solve_position(self.dt)
+
 
 
 
     def update_graphics(self):
-
-
-
-
-
-
-
-
+        print
