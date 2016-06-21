@@ -92,6 +92,7 @@ class N_Body:
         self.potential_matrix = np.zeros((self.Grid_Size, self.Grid_Size))
 
         fft1 = np.fft.fft(self.density_matrix)
+        #fft2 = np.fft.fft(self.softening_potential)
 
         self.potential_matrix = np.real(np.fft.ifft(fft1 * self.softening_potential))
         # we use the fact that the fft of a constant is the same value
