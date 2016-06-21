@@ -146,73 +146,73 @@ class N_Body:
 
 
 
-        if (self.periodic == True):
+            if (self.periodic == True):
 
 
-            if (current_x == 0):
-                ux_left = self.potential_matrix[self.Grid_Size][current_y]
-            else:
-                ux_left = self.potential_matrix[current_x - 1][current_y]
+                if (current_x == 0):
+                    ux_left = self.potential_matrix[self.Grid_Size][current_y]
+                else:
+                    ux_left = self.potential_matrix[current_x - 1][current_y]
 
 
-            if (current_x == self.Grid_Size - 1):
-                ux_right = self.potential_matrix[0][current_y]
-            else:
-                ux_right = self.potential_matrix[current_x + 1][current_y]
-
-
-
-            if (current_y == 0):
-                uy_up = self.potential_matrix[current_x][self.Grid_Size]
-            else:
-                uy_up = self.potential_matrix[current_x][current_y - 1]
-
-
-            if (current_y == self.Grid_Size - 1):
-                uy_down = self.potential_matrix[current_x][0]
-            else:
-                uy_down = self.potential_matrix[current_x][current_y + 1]
+                if (current_x == self.Grid_Size - 1):
+                    ux_right = self.potential_matrix[0][current_y]
+                else:
+                    ux_right = self.potential_matrix[current_x + 1][current_y]
 
 
 
-
-        self.real_space_list[i].solve_force(ux_left, ux_right, uy_up, uy_down)
-
-        # This sets up the velocity
-
-        self.real_space_list[i].solve_velocity(self.dt)
-
-        # This sets up the position
+                if (current_y == 0):
+                    uy_up = self.potential_matrix[current_x][self.Grid_Size]
+                else:
+                    uy_up = self.potential_matrix[current_x][current_y - 1]
 
 
-        if (self.periodic == True):
-
-            if(self.real_space_list[i].position_x < 0 ):
-                self.real_space_list[i].position_x = self.Grid_Size - 0.1
-
-            if (self.real_space_list[i].position_x > self.Grid_Size):
-                self.real_space_list[i].position_x = 0.1
-
-            if (self.real_space_list[i].position_y < 0):
-                self.real_space_list[i].position_y = self.Grid_Size - 0.1
-
-            if (self.real_space_list[i].position_y > self.Grid_Size):
-                self.real_space_list[i].position_y = 0.1
+                if (current_y == self.Grid_Size - 1):
+                    uy_down = self.potential_matrix[current_x][0]
+                else:
+                    uy_down = self.potential_matrix[current_x][current_y + 1]
 
 
-        if (self.periodic == False):
 
-            if (self.real_space_list[i].position_x < 0):
-                del self.real_space_list[i]
 
-            if (self.real_space_list[i].position_x > self.Grid_Size):
-                del self.real_space_list[i]
+            self.real_space_list[i].solve_force(ux_left, ux_right, uy_up, uy_down)
 
-            if (self.real_space_list[i].position_y < 0):
-                del self.real_space_list[i]
+            # This sets up the velocity
 
-            if (self.real_space_list[i].position_y > self.Grid_Size):
-                del self.real_space_list[i]
+            self.real_space_list[i].solve_velocity(self.dt)
+
+            # This sets up the position
+
+
+            if (self.periodic == True):
+
+                if(self.real_space_list[i].position_x < 0 ):
+                    self.real_space_list[i].position_x = self.Grid_Size - 0.1
+
+                if (self.real_space_list[i].position_x > self.Grid_Size):
+                    self.real_space_list[i].position_x = 0.1
+
+                if (self.real_space_list[i].position_y < 0):
+                    self.real_space_list[i].position_y = self.Grid_Size - 0.1
+
+                if (self.real_space_list[i].position_y > self.Grid_Size):
+                    self.real_space_list[i].position_y = 0.1
+
+
+            if (self.periodic == False):
+
+                if (self.real_space_list[i].position_x < 0):
+                    del self.real_space_list[i]
+
+                if (self.real_space_list[i].position_x > self.Grid_Size):
+                    del self.real_space_list[i]
+
+                if (self.real_space_list[i].position_y < 0):
+                    del self.real_space_list[i]
+
+                if (self.real_space_list[i].position_y > self.Grid_Size):
+                    del self.real_space_list[i]
 
 
         self.real_space_list[i].solve_position(self.dt)
