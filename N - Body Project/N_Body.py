@@ -12,13 +12,13 @@ class N_Body:
     def __init__(self, mode = 1):
 
 
-        self.Number_of_particles = 100000  #Number of particles
+        self.Number_of_particles = 1000  #Number of particles
 
         self.G = 6.67300 * 10 ** -11
 
-        self.Grid_Size = 101 #The grid is this number on each side
+        self.Grid_Size = 501 #The grid is this number on each side
 
-        self.dt = 0.005
+        self.dt = 0.05
 
         #Create the grid with equal spacing
 
@@ -29,6 +29,7 @@ class N_Body:
         self.potential_matrix = np.zeros((self.Grid_Size, self.Grid_Size)) # this stores the potential matrix
 
         self.softening_potential = (-1*self.G)/ 2**(0.5)
+
         #The cut of radius before we use the softening potential is sqrt(2)
 
         self.periodic = False
@@ -42,7 +43,7 @@ class N_Body:
 
 
 
-    def populate_real_space_matrix(self):
+    def populate_real_space_list(self):
 
 
         if(self.mode == 1):
@@ -55,8 +56,8 @@ class N_Body:
         if(self.mode == 3):
 
             for x in range(0, self.Number_of_particles):
-                temp_x = rand.uniform(0, 100)
-                temp_y = rand.uniform(0, 100)
+                temp_x = rand.uniform(0, self.Grid_Size - 1)
+                temp_y = rand.uniform(0, self.Grid_Size - 1)
 
                 temp_particle = particle.particle(1, temp_x, temp_y) # we are using the uniform mass of 1
 
@@ -66,14 +67,13 @@ class N_Body:
 
 
 
-    def print_test(self):
-
-        print self.potential_matrix
 
 
     def generate_density_matrix(self):
 
-         for i in range(len(self.real_space_list)):
+        self.density_matrix = np.zeros(shape=(self.Grid_Size, self.Grid_Size))
+
+        for i in range(len(self.real_space_list)):
 
             round_x = int(round(self.real_space_list[i].position_x))
             round_y = int(round(self.real_space_list[i].position_y))
@@ -91,6 +91,8 @@ class N_Body:
 
     def generate_potential_matrix(self):
 
+        self.potential_matrix = np.zeros((self.Grid_Size, self.Grid_Size))
+
         fft1 = np.fft.fft(self.density_matrix)
 
         self.potential_matrix = np.real(np.fft.ifft(fft1 * self.softening_potential))
@@ -100,7 +102,15 @@ class N_Body:
 
     def update_particle_positions(self):
 
+
+        #print self.density_matrix
+        print
+        #print self.potential_matrix
+
         for i in range(0, len(self.real_space_list)):
+
+            self.real_space_list[i].print_info();
+
 
             # This sets up the force
 
@@ -111,9 +121,9 @@ class N_Body:
 
 
                 if(current_x == 0):
-                  ux_left = 0
+                    ux_left = 0
                 else:
-                   ux_left = self.potential_matrix[current_x - 1][current_y]
+                    ux_left = self.potential_matrix[current_x - 1][current_y]
 
 
                 if(current_x == self.Grid_Size -1):
@@ -206,6 +216,7 @@ class N_Body:
 
 
         self.real_space_list[i].solve_position(self.dt)
+
 
 
 

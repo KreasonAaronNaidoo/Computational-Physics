@@ -6,13 +6,52 @@ import random as ran
 
 if __name__ == "__main__":
 
+    print("Simulations modes:")
+    print("Mode 1: Single particla starting at rest")
+    print("Mode 2: Two particles starting rest ")
+    print("Mode 3: Full N-body simulation")
+    print
+    user = input("Please input the simulation mode:  ")
+
+    print
+
+    mode = int(user)
+
+    system = N_Body.N_Body(mode) #pass in the mode
+
+    x,y = [],[]
 
 
-    system = N_Body.N_Body(3) #pass in the mode
+    system.populate_real_space_list()
 
-    system.populate_real_space_matrix()
 
-    n = 0
+
+    def convert_positions_to_list():
+
+        for i in range(len(system.real_space_list)):
+
+           # print(system.real_space_list[i].position_x)
+
+
+            x.append(system.real_space_list[i].position_x)
+            y.append(system.real_space_list[i].position_y)
+
+
+
+        print("Finished converting positions to lists")
+
+
+    def draw():
+
+        plt.clf()
+
+        plt.plot(x, y, ".")
+
+        plt.show()
+
+
+
+
 
     while(True): #This is the main loop
 
@@ -22,9 +61,6 @@ if __name__ == "__main__":
 
         system.update_particle_positions()
 
-        n = n + 1
+        convert_positions_to_list()
 
-        print n
-
-
-        #plt.plot(system.real_space_list[i].position_x,system.real_space_list[i].position_y, "o")
+        draw()
