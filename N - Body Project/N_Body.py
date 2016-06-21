@@ -92,7 +92,7 @@ class N_Body:
 
         fft1 = np.fft.fft(self.density_matrix)
 
-        mat = np.zeros((self.Grid_Size, self.Grid_Size))
+        mat = np.ones((self.Grid_Size, self.Grid_Size))
         mat = self.softening_potential * mat
 
         fft2 = np.fft.fft(mat)
