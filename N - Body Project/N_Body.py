@@ -2,7 +2,6 @@
 import particle
 import numpy as np
 import random as rand
-from matplotlib import pyplot as plt
 
 
 
@@ -18,7 +17,7 @@ class N_Body:
 
         self.Grid_Size = 501 #The grid is this number on each side
 
-        self.dt = 0.5
+        self.dt = 0.05
 
         self.real_space_list = [] # this is where the particles will live
 
@@ -26,7 +25,7 @@ class N_Body:
 
         self.potential_matrix = np.zeros((self.Grid_Size, self.Grid_Size)) # this stores the potential matrix
 
-        self.softening_potential = (-1*self.G)/ 2**(0.5)
+        self.softening_potential = 0.008#(-1*self.G)/ 2**(0.5)
 
         #The cut off radius before we use the softening potential is sqrt(2)
 
@@ -92,9 +91,14 @@ class N_Body:
         self.potential_matrix = np.zeros((self.Grid_Size, self.Grid_Size))
 
         fft1 = np.fft.fft(self.density_matrix)
-        #fft2 = np.fft.fft(self.softening_potential)
 
-        self.potential_matrix = np.real(np.fft.ifft(fft1 * self.softening_potential))
+        mat = np.zeros((self.Grid_Size, self.Grid_Size))
+        mat = self.softening_potential * mat
+
+        fft2 = np.fft.fft(mat)
+
+
+        self.potential_matrix = np.real(np.fft.ifft(fft1 * fft2))
         # we use the fact that the fft of a constant is the same value
 
 

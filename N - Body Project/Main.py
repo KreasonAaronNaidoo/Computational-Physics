@@ -21,6 +21,7 @@ if __name__ == "__main__":
 
     x,y = [],[]
 
+    plt.ion()
 
     system.populate_real_space_list()
 
@@ -47,7 +48,9 @@ if __name__ == "__main__":
 
         plt.plot(x, y, ".")
 
-        plt.show()
+        plt.draw()
+
+        plt.pause(.1)
 
 
 
