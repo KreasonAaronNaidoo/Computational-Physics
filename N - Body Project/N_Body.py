@@ -18,9 +18,7 @@ class N_Body:
 
         self.Grid_Size = 501 #The grid is this number on each side
 
-        self.dt = 0.05
-
-        #Create the grid with equal spacing
+        self.dt = 0.5
 
         self.real_space_list = [] # this is where the particles will live
 
@@ -30,7 +28,7 @@ class N_Body:
 
         self.softening_potential = (-1*self.G)/ 2**(0.5)
 
-        #The cut of radius before we use the softening potential is sqrt(2)
+        #The cut off radius before we use the softening potential is sqrt(2)
 
         self.periodic = False
         #Change this value to change to the system to periodic
@@ -109,7 +107,7 @@ class N_Body:
 
         for i in range(0, len(self.real_space_list)):
 
-            self.real_space_list[i].print_info();
+            #self.real_space_list[i].print_info();
 
 
             # This sets up the force

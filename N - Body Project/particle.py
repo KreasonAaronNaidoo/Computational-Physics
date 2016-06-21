@@ -18,8 +18,8 @@ class particle:
         self.force_x = 0 # x force
         self.force_y = 0 # y force
 
-        self.velocity_x = 0.0001 # x velocity
-        self.velocity_y = 0.0001 # y velocity
+        self.velocity_x = 0 # x velocity
+        self.velocity_y = 0 # y velocity
 
         self.acceleration_x = 0 # x acceleration
         self.acceleration_y = 0 # y acceleration
