@@ -25,6 +25,10 @@ if __name__ == "__main__":
 
     system.populate_real_space_list()
 
+    print len(system.real_space_list)
+
+    plt.imshow(system.potential_matrix);
+
 
 
     def convert_positions_to_list():
@@ -39,12 +43,11 @@ if __name__ == "__main__":
 
 
 
-        print("Finished converting positions to lists")
-
 
     def draw():
 
         plt.clf()
+
 
         plt.plot(x, y, ".")
 
@@ -61,6 +64,10 @@ if __name__ == "__main__":
         system.generate_density_matrix()
 
         system.generate_potential_matrix()
+
+        plt.imshow(system.potential_matrix)
+
+        plt.pause(30)
 
         system.update_particle_positions()
 
