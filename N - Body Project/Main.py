@@ -1,7 +1,7 @@
 import N_Body
 import matplotlib.pyplot as plt
 import random as ran
-
+import numpy as np
 
 
 if __name__ == "__main__":
@@ -26,6 +26,8 @@ if __name__ == "__main__":
     plt.ion()
 
     system.populate_real_space_list()
+
+    system.generate_softened_potential_matrix()
 
 
 
@@ -68,14 +70,13 @@ if __name__ == "__main__":
 
         #plt.pause(30)
 
-        #plt.imshow(system.potential_matrix)
+        plt.imshow(system.softened_potential_matrix)
 
-        #plt.pause(30)
+
+        plt.pause(30)
 
 
         system.generate_density_matrix()
-
-        system.generate_softened_potential_matrix()
 
         system.generate_potential_matrix()
 
@@ -84,6 +85,11 @@ if __name__ == "__main__":
         convert_positions_to_list()
 
         draw()
+
+        #print(system.softened_potential_matrix)
+        #print
+
+        plt.pause(30)
 
 
 

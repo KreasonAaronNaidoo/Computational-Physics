@@ -75,43 +75,51 @@ class N_Body:
             round_x = int(round(self.real_space_list[i].position_x))
             round_y = int(round(self.real_space_list[i].position_y))
 
-
-            if(self.periodic == True):
-
-                if(round_x < 0):
-                    round_x = self.Grid_Size
-                if(round_x > self.Grid_Size):
-                    round_x = 0
-
-                if (round_y < 0):
-                    round_y = self.Grid_Size
-                if (round_y > self.Grid_Size):
-                    round_y = 0
-
-
-
             self.real_space_list[i].round_x = round_x
             self.real_space_list[i].round_y = round_y
 
             self.density_matrix[round_x][round_y] = self.density_matrix[round_x][round_y] + 1
             #This creates the density matrix
 
+
+
     def generate_softened_potential_matrix(self):
 
-        for i in range(len(self.real_space_list)):
-
-            rel_x = self.real_space_list[i].position_x - int(self.real_space_list[i].position_x)
-            rel_y = self.real_space_list[i].position_y - int(self.real_space_list[i].position_y)
+        #Change i from 0 -> 7 to use negitives
 
 
+        for i in range(0,self.Grid_Size / 2):
+            for j in range(0, self.Grid_Size / 2):
 
-            if(np.sqrt((rel_x**2 + rel_y**2))  < self.epsilon):
-                pot = 1 / np.sqrt(rel_x**2 + rel_y**2 + self.epsilon**2)#Use SP
+                if(i == 0 and j == 0):
+                    self.softened_potential_matrix[0][0] = 1
+                    self.softened_potential_matrix[0][self.Grid_Size - 1] = 1
 
-            else:
-                pot = 1 / np.sqrt((rel_x**2 + rel_y**2))
 
-            self.softened_potential_matrix[self.real_space_list[i].round_x][self.real_space_list[i].round_y] = pot
+
+                else:
+
+                    r1 = np.sqrt(i**2 + j**2)
+
+                    self.softened_potential_matrix[i][j] = 1.0 / r1
+
+
+                    j_prime = -1*(j+1)
+                    i_prime = -1 * (i + 1)
+
+                    r2 = np.sqrt(i**2 + j_prime**2)
+
+                    self.softened_potential_matrix[i][self.Grid_Size + j_prime] = 1.0 / r2
+
+                    r3 = np.sqrt(i_prime**2 + j**2)
+
+                    self.softened_potential_matrix[self.Grid_Size + i_prime][j] = 1.0 / r3
+
+                    r4 = np.sqrt(i_prime ** 2 + j_prime ** 2)
+
+                    self.softened_potential_matrix[self.Grid_Size + i_prime][self.Grid_Size + j_prime] = 1.0 / r4
+
+
 
 
 
@@ -131,224 +139,218 @@ class N_Body:
 
         #print self.potential_matrix
 
-
-
     def update_particle_positions(self):
 
+        # print self.density_matrix
+        # print self.potential_matrix
 
-        #print self.density_matrix
-        #print self.potential_matrix
+        i = 0
+        while (i < len(self.real_space_list) - 1):
+            deleted = False
+            j = i
+            for i in range(j, len(self.real_space_list)):
 
-        n = len(self.real_space_list)
+                n = len(self.real_space_list)
+                # print i, n, self.real_space_list[i].position_x
+                # self.real_space_list[i].print_info();
 
-        for i in range(0, n):
 
-            #self.real_space_list[i].print_info();
+                # This sets up the force
 
+                current_x = self.real_space_list[i].position_x
+                current_y = self.real_space_list[i].position_y
 
-            # This sets up the force
+                if (self.periodic == False):
 
-            current_x = self.real_space_list[i].position_x
-            current_y = self.real_space_list[i].position_y
+                    if ((current_x - 1 < 0) and (current_y - 1 < 0)):
 
-            if(self.periodic == False):
+                        ux_left = 0
+                        ux_right = self.potential_matrix[current_x + 1][current_y]
+                        uy_up = 0
+                        uy_down = self.potential_matrix[current_x][current_y + 1]
 
-                if ((current_x - 1 < 0) and (current_y - 1 < 0)):
 
-                    ux_left = 0
-                    ux_right = self.potential_matrix[current_x + 1][current_y]
-                    uy_up = 0
-                    uy_down = self.potential_matrix[current_x][current_y + 1]
+                    elif ((current_x - 1 < 0) and (current_y + 1 > self.Grid_Size)):
 
+                        ux_left = 0
+                        ux_right = self.potential_matrix[current_x + 1][current_y]
+                        uy_up = self.potential_matrix[current_x][current_y - 1]
+                        uy_down = 0
 
-                elif ((current_x - 1 < 0) and (current_y + 1 > self.Grid_Size)):
+                    elif ((current_x + 1 > self.Grid_Size) and (current_y - 1 < 0)):
 
-                    ux_left = 0
-                    ux_right = self.potential_matrix[current_x + 1][current_y]
-                    uy_up = self.potential_matrix[current_x][current_y - 1]
-                    uy_down = 0
+                        ux_left = self.potential_matrix[current_x - 1][current_y]
+                        ux_right = 0
+                        uy_up = 0
+                        uy_down = self.potential_matrix[current_x][current_y + 1]
 
-                elif ((current_x + 1 > self.Grid_Size) and (current_y - 1 < 0)):
+                    elif ((current_x + 1 > self.Grid_Size) and ((current_y + 1 > self.Grid_Size))):
 
-                    ux_left = self.potential_matrix[current_x - 1][current_y]
-                    ux_right = 0
-                    uy_up = 0
-                    uy_down = self.potential_matrix[current_x][current_y + 1]
+                        ux_left = self.potential_matrix[current_x - 1][current_y]
+                        ux_right = 0
+                        uy_up = self.potential_matrix[current_x][current_y - 1]
+                        uy_down = 0
 
-                elif ((current_x + 1 > self.Grid_Size) and ((current_y + 1 > self.Grid_Size))):
 
-                    ux_left = self.potential_matrix[current_x - 1][current_y]
-                    ux_right = 0
-                    uy_up = self.potential_matrix[current_x][current_y - 1]
-                    uy_down = 0
+                    elif ((current_y - 1 < 0) and (0 <= current_x <= self.Grid_Size)):
 
+                        ux_left = self.potential_matrix[current_x - 1][current_y]
+                        ux_right = self.potential_matrix[current_x + 1][current_y]
+                        uy_up = 0
+                        uy_down = self.potential_matrix[current_x][current_y + 1]
 
-                elif ((current_y - 1 < 0) and (0 <= current_x <= self.Grid_Size)):
 
-                    ux_left = self.potential_matrix[current_x - 1][current_y]
-                    ux_right = self.potential_matrix[current_x + 1][current_y]
-                    uy_up = 0
-                    uy_down = self.potential_matrix[current_x][current_y + 1]
 
+                    elif ((current_y + 1 > self.Grid_Size) and (0 <= current_x <= self.Grid_Size)):
 
+                        ux_left = self.potential_matrix[current_x - 1][current_y]
+                        ux_right = self.potential_matrix[current_x + 1][current_y]
+                        uy_up = self.potential_matrix[current_x][current_y - 1]
+                        uy_down = 0
 
-                elif ((current_y + 1 > self.Grid_Size) and (0 <= current_x <= self.Grid_Size)):
 
-                    ux_left = self.potential_matrix[current_x - 1][current_y]
-                    ux_right = self.potential_matrix[current_x + 1][current_y]
-                    uy_up = self.potential_matrix[current_x][current_y - 1]
-                    uy_down = 0
 
+                    elif ((0 <= current_y <= self.Grid_Size) and ((current_x - 1 < 0))):
 
+                        ux_left = 0
+                        ux_right = self.potential_matrix[current_x + 1][current_y]
+                        uy_up = self.potential_matrix[current_x][current_y - 1]
+                        uy_down = self.potential_matrix[current_x][current_y + 1]
 
-                elif ((0 <= current_y <= self.Grid_Size) and ((current_x - 1 < 0))):
+                    elif ((0 <= current_y <= self.Grid_Size) and ((current_x + 1 > self.Grid_Size))):
 
-                    ux_left = 0
-                    ux_right = self.potential_matrix[current_x + 1][current_y]
-                    uy_up = self.potential_matrix[current_x][current_y - 1]
-                    uy_down = self.potential_matrix[current_x][current_y + 1]
+                        ux_left = self.potential_matrix[current_x - 1][current_y]
+                        ux_right = 0
+                        uy_up = self.potential_matrix[current_x][current_y - 1]
+                        uy_down = self.potential_matrix[current_x][current_y + 1]
 
-                elif ((0 <= current_y <= self.Grid_Size) and ((current_x + 1 > self.Grid_Size))):
+                    else:
 
-                    ux_left = self.potential_matrix[current_x - 1][current_y]
-                    ux_right = 0
-                    uy_up = self.potential_matrix[current_x][current_y - 1]
-                    uy_down = self.potential_matrix[current_x][current_y + 1]
+                        ux_left = self.potential_matrix[current_x - 1][current_y]
+                        ux_right = self.potential_matrix[current_x + 1][current_y]
+                        uy_up = self.potential_matrix[current_x][current_y - 1]
+                        uy_down = self.potential_matrix[current_x][current_y + 1]
 
-                else:
+                if (self.periodic == True):
 
-                    ux_left = self.potential_matrix[current_x - 1][current_y]
-                    ux_right = self.potential_matrix[current_x + 1][current_y]
-                    uy_up = self.potential_matrix[current_x][current_y - 1]
-                    uy_down = self.potential_matrix[current_x][current_y + 1]
+                    if ((current_x - 1 < 0) and (current_y - 1 < 0)):
 
+                        ux_left = self.potential_matrix[self.Grid_Size - 1][current_y]
+                        ux_right = self.potential_matrix[current_x + 1][current_y]
+                        uy_up = self.potential_matrix[current_x][self.Grid_Size - 1]
+                        uy_down = self.potential_matrix[current_x][current_y + 1]
 
-            if(self.periodic == True):
 
+                    elif ((current_x - 1 < 0) and (current_y + 1 > self.Grid_Size)):
 
-                if((current_x - 1 < 0) and (current_y - 1 < 0)):
+                        ux_left = self.potential_matrix[self.Grid_Size - 1][current_y]
+                        ux_right = self.potential_matrix[current_x + 1][current_y]
+                        uy_up = self.potential_matrix[current_x][current_y - 1]
+                        uy_down = self.potential_matrix[current_x][0]
 
-                    ux_left = self.potential_matrix[self.Grid_Size][current_y]
-                    ux_right = self.potential_matrix[current_x + 1][current_y]
-                    uy_up = self.potential_matrix[current_x][self.Grid_Size]
-                    uy_down = self.potential_matrix[current_x][current_y + 1]
+                    elif ((current_x + 1 > self.Grid_Size) and (current_y - 1 < 0)):
 
+                        ux_left = self.potential_matrix[current_x - 1][current_y]
+                        ux_right = self.potential_matrix[0][current_y]
+                        uy_up = self.potential_matrix[current_x][self.Grid_Size - 1]
+                        uy_down = self.potential_matrix[current_x][current_y + 1]
 
-                elif((current_x - 1 < 0) and (current_y + 1 > self.Grid_Size)):
+                    elif ((current_x + 1 > self.Grid_Size) and ((current_y + 1 > self.Grid_Size))):
 
-                    ux_left = self.potential_matrix[self.Grid_Size][current_y]
-                    ux_right = self.potential_matrix[current_x + 1][current_y]
-                    uy_up = self.potential_matrix[current_x][current_y - 1]
-                    uy_down = self.potential_matrix[current_x][0]
+                        ux_left = self.potential_matrix[current_x - 1][current_y]
+                        ux_right = self.potential_matrix[0][current_y]
+                        uy_up = self.potential_matrix[current_x][current_y - 1]
+                        uy_down = self.potential_matrix[current_x][0]
 
-                elif((current_x + 1 > self.Grid_Size) and (current_y - 1 < 0)):
 
-                    ux_left = self.potential_matrix[current_x - 1][current_y]
-                    ux_right = self.potential_matrix[0][current_y]
-                    uy_up = self.potential_matrix[current_x][self.Grid_Size]
-                    uy_down = self.potential_matrix[current_x][current_y + 1]
+                    elif ((current_y - 1 < 0) and (0 <= current_x <= self.Grid_Size)):
 
-                elif((current_x + 1 > self.Grid_Size) and ((current_y + 1 > self.Grid_Size))):
+                        ux_left = self.potential_matrix[current_x - 1][current_y]
+                        ux_right = self.potential_matrix[current_x + 1][current_y]
+                        uy_up = self.potential_matrix[current_x][self.Grid_Size - 1]
+                        uy_down = self.potential_matrix[current_x][current_y + 1]
 
-                    ux_left = self.potential_matrix[current_x - 1][current_y]
-                    ux_right = self.potential_matrix[0][current_y]
-                    uy_up = self.potential_matrix[current_x][current_y - 1]
-                    uy_down = self.potential_matrix[current_x][0]
 
 
-                elif((current_y - 1 < 0) and (0 <= current_x <= self.Grid_Size)):
+                    elif ((current_y + 1 > self.Grid_Size) and (0 <= current_x <= self.Grid_Size)):
 
-                    ux_left = self.potential_matrix[current_x - 1][current_y]
-                    ux_right = self.potential_matrix[current_x + 1][current_y]
-                    uy_up = self.potential_matrix[current_x][self.Grid_Size]
-                    uy_down = self.potential_matrix[current_x][current_y + 1]
+                        ux_left = self.potential_matrix[current_x - 1][current_y]
+                        ux_right = self.potential_matrix[current_x + 1][current_y]
+                        uy_up = self.potential_matrix[current_x][current_y - 1]
+                        uy_down = self.potential_matrix[current_x][0]
 
 
 
-                elif((current_y + 1 > self.Grid_Size) and (0 <= current_x <= self.Grid_Size)):
+                    elif ((0 <= current_y <= self.Grid_Size) and ((current_x - 1 < 0))):
 
-                    ux_left = self.potential_matrix[current_x - 1][current_y]
-                    ux_right = self.potential_matrix[current_x + 1][current_y]
-                    uy_up = self.potential_matrix[current_x][current_y - 1]
-                    uy_down = self.potential_matrix[current_x][0]
+                        ux_left = self.potential_matrix[self.Grid_Size - 1][current_y]
+                        ux_right = self.potential_matrix[current_x + 1][current_y]
+                        uy_up = self.potential_matrix[current_x][current_y - 1]
+                        uy_down = self.potential_matrix[current_x][current_y + 1]
 
+                    elif ((0 <= current_y <= self.Grid_Size) and ((current_x + 1 > self.Grid_Size))):
 
+                        ux_left = self.potential_matrix[current_x - 1][current_y]
+                        ux_right = self.potential_matrix[0][current_y]
+                        uy_up = self.potential_matrix[current_x][current_y - 1]
+                        uy_down = self.potential_matrix[current_x][current_y + 1]
 
-                elif((0 <= current_y <= self.Grid_Size) and ((current_x - 1 < 0))):
+                    else:
 
-                    ux_left = self.potential_matrix[self.Grid_Size][current_y]
-                    ux_right = self.potential_matrix[current_x + 1][current_y]
-                    uy_up = self.potential_matrix[current_x][current_y - 1]
-                    uy_down = self.potential_matrix[current_x][current_y + 1]
+                        ux_left = self.potential_matrix[current_x - 1][current_y]
+                        ux_right = self.potential_matrix[current_x + 1][current_y]
+                        uy_up = self.potential_matrix[current_x][current_y - 1]
+                        uy_down = self.potential_matrix[current_x][current_y + 1]
 
-                elif((0 <= current_y <= self.Grid_Size) and ((current_x + 1 > self.Grid_Size))):
+                self.real_space_list[i].solve_force(ux_left, ux_right, uy_up, uy_down)
 
-                    ux_left = self.potential_matrix[current_x - 1][current_y]
-                    ux_right = self.potential_matrix[0][current_y]
-                    uy_up = self.potential_matrix[current_x][current_y - 1]
-                    uy_down = self.potential_matrix[current_x][current_y + 1]
+                # This sets up the velocity
 
-                else:
+                self.real_space_list[i].solve_velocity(self.dt)
 
-                    ux_left = self.potential_matrix[current_x - 1][current_y]
-                    ux_right = self.potential_matrix[current_x + 1][current_y]
-                    uy_up = self.potential_matrix[current_x][current_y - 1]
-                    uy_down = self.potential_matrix[current_x][current_y + 1]
+                # This sets up the position
 
+                self.real_space_list[i].solve_position(self.dt)
 
+                if (self.periodic == True):
 
+                    while (self.real_space_list[i].position_x <= 0):  # put in =
+                        self.real_space_list[i].position_x = self.Grid_Size + self.real_space_list[i].position_x
 
+                    while (self.real_space_list[i].position_x >= self.Grid_Size):
+                        self.real_space_list[i].position_x = self.real_space_list[i].position_x - self.Grid_Size
 
+                    while (self.real_space_list[i].position_y <= 0):  # put in =
+                        self.real_space_list[i].position_y = self.Grid_Size + self.real_space_list[i].position_y
 
+                    while (self.real_space_list[i].position_y >= self.Grid_Size):
+                        self.real_space_list[i].position_y = self.real_space_list[i].position_y - self.Grid_Size
 
-            self.real_space_list[i].solve_force(ux_left, ux_right, uy_up, uy_down)
+                if (self.periodic == False):
 
-            # This sets up the velocity
+                    while (self.real_space_list[i].position_x <= 0):
+                        del self.real_space_list[i]
+                        n = n - 1
+                        # i = i-1
+                        deleted = True  # break
 
-            self.real_space_list[i].solve_velocity(self.dt)
-
-            # This sets up the position
-
-            self.real_space_list[i].solve_position(self.dt)
-
-
-
-            if (self.periodic == True):
-
-                while(self.real_space_list[i].position_x < 0 ):
-                    self.real_space_list[i].position_x = self.Grid_Size + self.real_space_list[i].position_x
-
-                while (self.real_space_list[i].position_x >= self.Grid_Size):
-                    self.real_space_list[i].position_x = self.real_space_list[i].position_x - self.Grid_Size
-
-                while (self.real_space_list[i].position_y < 0):
-                    self.real_space_list[i].position_y = self.Grid_Size + self.real_space_list[i].position_y
-
-                while (self.real_space_list[i].position_y >= self.Grid_Size):
-                    self.real_space_list[i].position_y = self.Grid_Size - self.real_space_list[i].position_y
-
-
-            if (self.periodic == False):
-
-                while (self.real_space_list[i].position_x < 0):
-                    del self.real_space_list[i]
-                    n = n-1
-                    i = i-1
-
-                while (self.real_space_list[i].position_x >= self.Grid_Size):
-                    del self.real_space_list[i]
-                    n = n - 1
-                    i = i - 1
-
-                while (self.real_space_list[i].position_y < 0):
-                    del self.real_space_list[i]
-                    n = n - 1
-                    i = i - 1
-
-                while (self.real_space_list[i].position_y >= self.Grid_Size):
-                    del self.real_space_list[i]
-                    n = n - 1
-                    i = i - 1
+                    while (self.real_space_list[i].position_x >= self.Grid_Size):
+                        del self.real_space_list[i]
+                        n = n - 1
+                        # i = i - 1
+                        deleted = True  # ; break
+                    while (self.real_space_list[i].position_y <= 0):
+                        del self.real_space_list[i]
+                        n = n - 1
+                        # i = i - 1
+                        deleted = True  # break
+                    while (self.real_space_list[i].position_y >= self.Grid_Size):
+                        del self.real_space_list[i]
+                        n = n - 1
+                        # i = i - 1
+                        deleted = True  # break
+                    if deleted:
+                        break
 
 
 
