@@ -19,15 +19,13 @@ if __name__ == "__main__":
 
     system = N_Body.N_Body(mode) #pass in the mode
 
+    Grid_Size = system.Grid_Size
+
     x,y = [],[]
 
     plt.ion()
 
     system.populate_real_space_list()
-
-    print len(system.real_space_list)
-
-    plt.imshow(system.potential_matrix);
 
 
 
@@ -46,14 +44,17 @@ if __name__ == "__main__":
 
     def draw():
 
-        plt.clf()
-
-
         plt.plot(x, y, ".")
 
         plt.draw()
 
+        axes = plt.gca()
+        axes.set_xlim([0, Grid_Size])
+        axes.set_ylim([0, Grid_Size])
+
         plt.pause(.1)
+
+        plt.clf()
 
 
 
@@ -61,16 +62,29 @@ if __name__ == "__main__":
 
     while(True): #This is the main loop
 
+
+
+        #plt.imshow(system.density_matrix)
+
+        #plt.pause(30)
+
+        #plt.imshow(system.potential_matrix)
+
+        #plt.pause(30)
+
+
         system.generate_density_matrix()
 
+        system.generate_softened_potential_matrix()
+
         system.generate_potential_matrix()
-
-        plt.imshow(system.potential_matrix)
-
-        plt.pause(30)
 
         system.update_particle_positions()
 
         convert_positions_to_list()
 
         draw()
+
+
+
+

@@ -11,29 +11,32 @@ class N_Body:
     def __init__(self, mode = 1):
 
 
-        self.Number_of_particles = 20  #Number of particles
+        self.Number_of_particles = 1000  #Number of particles
 
-        self.Grid_Size = 50 #The grid is this number on each side
+        self.Grid_Size = 100 #The grid is this number on each side
 
         self.dt = 0.05
 
         self.real_space_list = [] # this is where the particles will live
 
-        self.density_matrix = np.zeros(shape=(self.Grid_Size, self.Grid_Size))  # this stores the density matrix
+        self.density_matrix = np.zeros((self.Grid_Size, self.Grid_Size))  # this stores the density matrix
 
         self.potential_matrix = np.zeros((self.Grid_Size, self.Grid_Size)) # this stores the potential matrix
 
-        self.softening_potential = 10.0 #(-1*self.G)/ 2**(0.5)
+        self.softened_potential_matrix = np.zeros((self.Grid_Size, self.Grid_Size)) # this stores the S potential matrix
+
+        self.epsilon = 0.1
 
         #The cut off radius before we use the softening potential is sqrt(2)
 
-        self.periodic = True
+        self.periodic = False
         #Change this value to change to the system to periodic
 
         self.mode = mode
         #mode == 1 : single stationary particle
         #mode == 2 : 2 stationary particles
         #mode == 3 : Full N-Body simulation
+
 
 
 
@@ -45,8 +48,8 @@ class N_Body:
             self.real_space_list.append(particle.particle(1, self.Grid_Size/2.0, self.Grid_Size/2.0))
 
         if(self.mode == 2):
-            self.real_space_list.append(particle.particle(1, self.Grid_Size / 3.0, self.Grid_Size / 2.0))
-            self.real_space_list.append(particle.particle(1, self.Grid_Size - self.Grid_Size/3.0, self.Grid_Size / 2.0))
+            self.real_space_list.append(particle.particle(1, self.Grid_Size / 2.0 + 5, self.Grid_Size / 2.0 + 5))
+            self.real_space_list.append(particle.particle(1, self.Grid_Size / 2.0 - 5, self.Grid_Size / 2.0 - 5))
 
         if(self.mode == 3):
 
@@ -66,43 +69,61 @@ class N_Body:
 
     def generate_density_matrix(self):
 
-        self.density_matrix = np.zeros(shape=(self.Grid_Size, self.Grid_Size))
 
         for i in range(len(self.real_space_list)):
-
-
-            if(self.real_space_list[i].position_x > self.Grid_Size):
-                self.real_space_list[i].position_x = self.real_space_list[i].position_x - self.Grid_Size
-
-            if (self.real_space_list[i].position_x < 0):
-                self.real_space_list[i].position_x = self.real_space_list[i].position_x + self.Grid_Size
-
 
             round_x = int(round(self.real_space_list[i].position_x))
             round_y = int(round(self.real_space_list[i].position_y))
 
 
+            if(self.periodic == True):
+
+                if(round_x < 0):
+                    round_x = self.Grid_Size
+                if(round_x > self.Grid_Size):
+                    round_x = 0
+
+                if (round_y < 0):
+                    round_y = self.Grid_Size
+                if (round_y > self.Grid_Size):
+                    round_y = 0
+
+
+
             self.real_space_list[i].round_x = round_x
             self.real_space_list[i].round_y = round_y
 
-
             self.density_matrix[round_x][round_y] = self.density_matrix[round_x][round_y] + 1
             #This creates the density matrix
+
+    def generate_softened_potential_matrix(self):
+
+        for i in range(len(self.real_space_list)):
+
+            rel_x = self.real_space_list[i].position_x - int(self.real_space_list[i].position_x)
+            rel_y = self.real_space_list[i].position_y - int(self.real_space_list[i].position_y)
+
+
+
+            if(np.sqrt((rel_x**2 + rel_y**2))  < self.epsilon):
+                pot = 1 / np.sqrt(rel_x**2 + rel_y**2 + self.epsilon**2)#Use SP
+
+            else:
+                pot = 1 / np.sqrt((rel_x**2 + rel_y**2))
+
+            self.softened_potential_matrix[self.real_space_list[i].round_x][self.real_space_list[i].round_y] = pot
+
+
+
 
 
 
     def generate_potential_matrix(self):
 
-        self.potential_matrix = np.zeros((self.Grid_Size, self.Grid_Size))
 
         fft1 = np.fft.fft(self.density_matrix)
 
-        mat = np.ones((self.Grid_Size, self.Grid_Size))
-
-        mat = self.softening_potential * mat
-
-
-        fft2 = np.fft.fft(mat)
+        fft2 = np.fft.fft(self.softened_potential_matrix)
 
 
         self.potential_matrix = np.real(np.fft.ifft(fft1 * fft2))
@@ -118,7 +139,9 @@ class N_Body:
         #print self.density_matrix
         #print self.potential_matrix
 
-        for i in range(0, len(self.real_space_list)):
+        n = len(self.real_space_list)
+
+        for i in range(0, n):
 
             #self.real_space_list[i].print_info();
 
@@ -288,34 +311,44 @@ class N_Body:
 
             self.real_space_list[i].solve_position(self.dt)
 
-            if (self.periodic == True): #change to while loop
 
-                if(self.real_space_list[i].position_x < 0 ):
+
+            if (self.periodic == True):
+
+                while(self.real_space_list[i].position_x < 0 ):
                     self.real_space_list[i].position_x = self.Grid_Size + self.real_space_list[i].position_x
 
-                if (self.real_space_list[i].position_x >= self.Grid_Size):
+                while (self.real_space_list[i].position_x >= self.Grid_Size):
                     self.real_space_list[i].position_x = self.real_space_list[i].position_x - self.Grid_Size
 
-                if (self.real_space_list[i].position_y < 0):
+                while (self.real_space_list[i].position_y < 0):
                     self.real_space_list[i].position_y = self.Grid_Size + self.real_space_list[i].position_y
 
-                if (self.real_space_list[i].position_y >= self.Grid_Size):
+                while (self.real_space_list[i].position_y >= self.Grid_Size):
                     self.real_space_list[i].position_y = self.Grid_Size - self.real_space_list[i].position_y
 
 
             if (self.periodic == False):
 
-                if (self.real_space_list[i].position_x <= 0):
+                while (self.real_space_list[i].position_x < 0):
                     del self.real_space_list[i]
+                    n = n-1
+                    i = i-1
 
-                if (self.real_space_list[i].position_x >= self.Grid_Size):
+                while (self.real_space_list[i].position_x >= self.Grid_Size):
                     del self.real_space_list[i]
+                    n = n - 1
+                    i = i - 1
 
-                if (self.real_space_list[i].position_y <= 0):
+                while (self.real_space_list[i].position_y < 0):
                     del self.real_space_list[i]
+                    n = n - 1
+                    i = i - 1
 
-                if (self.real_space_list[i].position_y >= self.Grid_Size):
+                while (self.real_space_list[i].position_y >= self.Grid_Size):
                     del self.real_space_list[i]
+                    n = n - 1
+                    i = i - 1
 
 
 

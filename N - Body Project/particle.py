@@ -24,6 +24,8 @@ class particle:
         self.acceleration_x = 0 # x acceleration
         self.acceleration_y = 0 # y acceleration
 
+        self.potential = 0
+
 
 
 
@@ -37,12 +39,10 @@ class particle:
         self.acceleration_y = self.force_y / self.mass
 
 
-
-
     def solve_velocity(self, dt):
 
-        self.velocity_x = self.velocity_x + self.force_x * dt
-        self.velocity_y = self.velocity_y + self.force_y * dt
+        self.velocity_x = self.velocity_x + self.acceleration_x * dt
+        self.velocity_y = self.velocity_y + self.acceleration_y * dt
 
         #print self.velocity_x, self.velocity_y
 
