@@ -29,7 +29,7 @@ class N_Body:
 
         #The cut off radius before we use the softening potential is sqrt(2)
 
-        self.periodic = False
+        self.periodic = True
         #Change this value to change to the system to periodic
 
         self.mode = mode
