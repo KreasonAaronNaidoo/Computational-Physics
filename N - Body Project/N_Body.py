@@ -11,7 +11,7 @@ class N_Body:
     def __init__(self, mode = 1):
 
 
-        self.Number_of_particles = 70  #Number of particles
+        self.Number_of_particles = 100  #Number of particles
 
         self.Grid_Size = 8 #The grid is this number on each side
 

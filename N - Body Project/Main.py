@@ -1,6 +1,8 @@
 import N_Body
 import matplotlib.pyplot as plt
-from matplotlib.patches import Rectangle
+import numpy as np
+import matplotlib.animation as animation
+import time
 
 
 
@@ -25,12 +27,12 @@ if __name__ == "__main__":
 
     plt.ion()
 
+    fig = plt.figure()
+
 
     system.populate_real_space_list()
 
     system.generate_softened_potential_matrix()
-
-
 
 
 
@@ -51,9 +53,7 @@ if __name__ == "__main__":
 
         axes = plt.gca()
 
-        axes.add_patch(Rectangle((0, 0), Grid_Size, Grid_Size, fill = True, facecolor="white"))
-
-        plt.plot(x, y, ".")
+        plt.plot(x, y, "b.")
 
         plt.draw()
 
@@ -67,18 +67,8 @@ if __name__ == "__main__":
 
 
 
-    while(True): #This is the main loop
 
-
-
-        #plt.imshow(system.softened_potential_matrix)
-
-        #plt.pause(30)
-
-        #plt.imshow(system.density_matrix)
-        #plt.pause(30)
-
-
+    def update_system():
 
         system.generate_density_matrix()
 
@@ -88,8 +78,10 @@ if __name__ == "__main__":
 
         convert_positions_to_list()
 
+
+
+
+    while(True):
+        update_system()
         draw()
-
-
-
 
