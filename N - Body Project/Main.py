@@ -1,7 +1,7 @@
 import N_Body
 import matplotlib.pyplot as plt
-import random as ran
-import numpy as np
+from matplotlib.patches import Rectangle
+
 
 
 if __name__ == "__main__":
@@ -25,9 +25,12 @@ if __name__ == "__main__":
 
     plt.ion()
 
+
     system.populate_real_space_list()
 
     system.generate_softened_potential_matrix()
+
+
 
 
 
@@ -46,6 +49,10 @@ if __name__ == "__main__":
 
     def draw():
 
+        axes = plt.gca()
+
+        axes.add_patch(Rectangle((0, 0), Grid_Size, Grid_Size, fill = True, facecolor="white"))
+
         plt.plot(x, y, ".")
 
         plt.draw()
@@ -60,19 +67,17 @@ if __name__ == "__main__":
 
 
 
-
-
     while(True): #This is the main loop
 
 
 
-        #plt.imshow(system.density_matrix)
-
-        #plt.pause(30)
-
         #plt.imshow(system.softened_potential_matrix)
 
         #plt.pause(30)
+
+        #plt.imshow(system.density_matrix)
+        #plt.pause(30)
+
 
 
         system.generate_density_matrix()

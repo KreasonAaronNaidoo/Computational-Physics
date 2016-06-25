@@ -11,9 +11,9 @@ class N_Body:
     def __init__(self, mode = 1):
 
 
-        self.Number_of_particles = 1000  #Number of particles
+        self.Number_of_particles = 70  #Number of particles
 
-        self.Grid_Size = 100 #The grid is this number on each side
+        self.Grid_Size = 8 #The grid is this number on each side
 
         self.dt = 0.05
 
@@ -48,8 +48,8 @@ class N_Body:
             self.real_space_list.append(particle.particle(1, self.Grid_Size/2.0, self.Grid_Size/2.0))
 
         if(self.mode == 2):
-            self.real_space_list.append(particle.particle(1, self.Grid_Size / 2.0 + 5, self.Grid_Size / 2.0 + 5))
-            self.real_space_list.append(particle.particle(1, self.Grid_Size / 2.0 - 5, self.Grid_Size / 2.0 - 5))
+            self.real_space_list.append(particle.particle(1, self.Grid_Size / 3.0 , self.Grid_Size / 3.0))
+            self.real_space_list.append(particle.particle(1,2*self.Grid_Size / 3.0, 2*self.Grid_Size / 3.0))
 
         if(self.mode == 3):
 
@@ -78,8 +78,15 @@ class N_Body:
             self.real_space_list[i].round_x = round_x
             self.real_space_list[i].round_y = round_y
 
+            if (round_x > self.Grid_Size - 1):
+                round_x = self.Grid_Size - 2
+            if (round_y >  self.Grid_Size - 1):
+                round_y = self.Grid_Size - 2
+
+
             self.density_matrix[round_x][round_y] = self.density_matrix[round_x][round_y] + 1
             #This creates the density matrix
+        print self.real_space_list[1].position_x
 
 
 
@@ -93,9 +100,6 @@ class N_Body:
 
                 if(i == 0 and j == 0):
                     self.softened_potential_matrix[0][0] = 1
-                    self.softened_potential_matrix[0][self.Grid_Size - 1] = 1
-
-
 
                 else:
 
@@ -119,12 +123,14 @@ class N_Body:
 
                     self.softened_potential_matrix[self.Grid_Size + i_prime][self.Grid_Size + j_prime] = 1.0 / r4
 
+        self.softened_potential_matrix[self.Grid_Size - 1][self.Grid_Size - 1] = 1.0 / np.sqrt(2)
+        self.softened_potential_matrix[0][self.Grid_Size - 1] = 1
+        self.softened_potential_matrix[self.Grid_Size - 1][0] = 1
 
 
+        #print self.softened_potential_matrix[0][0] , self.softened_potential_matrix[0][self.Grid_Size - 1]
 
-
-
-
+        #print self.softened_potential_matrix[self.Grid_Size - 1][0], self.softened_potential_matrix[self.Grid_Size - 1][self.Grid_Size - 1]
 
     def generate_potential_matrix(self):
 
