@@ -11,6 +11,7 @@ if __name__ == "__main__":
     print
     print
     print("Simulations modes:")
+    print
     print("Mode 1: Single particla starting at rest")
     print("Mode 2: Two particles starting rest ")
     print("Mode 3: Full N-body simulation")
@@ -22,9 +23,10 @@ if __name__ == "__main__":
     mode1 = int(user1)
 
     print
-    print "Please select an output mode: "
-    print("Mode 1: Display actual position data")
-    print("Mode 2: Display an approximation of the actual positions in the form of a density grid, this mode is buggy")
+    print "Output modes:"
+    print
+    print("Mode 1: Display actual position data (Recomended)")
+    print("Mode 2: Display an approximation of the actual positions in the form of a density grid (this mode is buggy and not recomended)")
     print
     user2 = input("Please input the display mode:  ")
 
@@ -34,7 +36,8 @@ if __name__ == "__main__":
 
 
     print
-    print "Please select periodicity mode: "
+    print "Periodicity modes:"
+    print
     print("Mode 1: Periodic environment ")
     print("Mode 2: Non - periodic environment")
     print
@@ -47,7 +50,7 @@ if __name__ == "__main__":
 
     Grid_Size = 0
 
-    plt.ion()
+    #plt.ion()
 
 
 
@@ -78,7 +81,8 @@ if __name__ == "__main__":
             x[i] = system.real_space_list[i].position_x
             y[i] = system.real_space_list[i].position_y
 
-    def drawA():
+    '''
+    def drawA():# old draw method, replaced by the animate function
 
         fig, ax = plt.subplots(subplot_kw={'xlim': [0, Grid_Size], 'ylim': [0, Grid_Size]})
 
@@ -96,11 +100,7 @@ if __name__ == "__main__":
         plt.pause(.01)
 
         plt.close(fig)
-
-
-
-
-
+    '''
 
     def drawB():
 
@@ -125,13 +125,35 @@ if __name__ == "__main__":
         convert_positions_to_list()
 
 
+    def drawA_animated(i):
 
-    while(True):
         update_system()
 
-        if(mode2 == 1):
-            drawA()
-        else:
+        ax.clear()
+        ax.scatter(x, y, marker="o")
+        ax.set_xlim([0, Grid_Size])
+        ax.set_ylim([0, Grid_Size])
+        ax.set_title('N - Body Simulation')
+
+
+
+
+
+    if(mode2 == 1):
+
+        fig, ax = plt.subplots(subplot_kw={'xlim': [0, Grid_Size], 'ylim': [0, Grid_Size]})
+        ax.set_title('N - Body Simulation')
+
+        ani = animation.FuncAnimation(fig, drawA_animated, interval=10)
+
+        plt.show()
+
+
+
+    else:
+
+        while(True):
+            update_system()
             drawB()
 
 

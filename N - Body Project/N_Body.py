@@ -15,7 +15,7 @@ class N_Body:
 
         self.Grid_Size = GS #The grid is this number on each side
 
-        self.dt = 0.05
+        self.dt = 0.01
 
         self.real_space_list = [] # this is where the particles will live
 
@@ -357,7 +357,6 @@ class N_Body:
                         deleted = True
                         break
                     if deleted:
-                        print "del"
                         break
 
 
