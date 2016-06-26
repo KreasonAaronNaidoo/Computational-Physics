@@ -49,7 +49,7 @@ if __name__ == "__main__":
 
     plt.ion()
 
-    fig = plt.figure()
+
 
     if(mode1 == 1):
         Grid_Size = 8
@@ -71,7 +71,6 @@ if __name__ == "__main__":
 
 
 
-
     def convert_positions_to_list():
 
         for i in range(len(system.real_space_list)):
@@ -81,11 +80,11 @@ if __name__ == "__main__":
 
     def drawA():
 
+        fig, ax = plt.subplots(subplot_kw={'xlim': [0, Grid_Size], 'ylim': [0, Grid_Size]})
 
-        fig,ax = plt.subplots(subplot_kw={'xlim': [0, Grid_Size],'ylim': [0, Grid_Size]})
         ax.set_title('N - Body Simulation')
 
-        res = ax.scatter(x, y, marker=".")
+        ax.scatter(x, y, marker="o")
 
         #plt.plot(x,y,"b.")
         #plt.draw()
@@ -96,7 +95,10 @@ if __name__ == "__main__":
 
         plt.pause(.01)
 
-        res.remove()
+        plt.close(fig)
+
+
+
 
 
 
