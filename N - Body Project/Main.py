@@ -81,26 +81,7 @@ if __name__ == "__main__":
             x[i] = system.real_space_list[i].position_x
             y[i] = system.real_space_list[i].position_y
 
-    '''
-    def drawA():# old draw method, replaced by the animate function
 
-        fig, ax = plt.subplots(subplot_kw={'xlim': [0, Grid_Size], 'ylim': [0, Grid_Size]})
-
-        ax.set_title('N - Body Simulation')
-
-        ax.scatter(x, y, marker="o")
-
-        #plt.plot(x,y,"b.")
-        #plt.draw()
-
-        #axes = plt.gca()
-        #axes.set_xlim([0, Grid_Size])
-        #axes.set_ylim([0, Grid_Size])
-
-        plt.pause(.01)
-
-        plt.close(fig)
-    '''
 
     def drawB():
 
@@ -125,7 +106,7 @@ if __name__ == "__main__":
         convert_positions_to_list()
 
 
-    def drawA_animated(i):
+    def drawA(i):
 
         update_system()
 
@@ -144,7 +125,7 @@ if __name__ == "__main__":
         fig, ax = plt.subplots(subplot_kw={'xlim': [0, Grid_Size], 'ylim': [0, Grid_Size]})
         ax.set_title('N - Body Simulation')
 
-        ani = animation.FuncAnimation(fig, drawA_animated, interval=10)
+        ani = animation.FuncAnimation(fig, drawA, interval=10)
 
         plt.show()
 
