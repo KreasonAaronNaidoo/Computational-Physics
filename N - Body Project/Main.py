@@ -34,7 +34,6 @@ if __name__ == "__main__":
 
 
     Grid_Size = 0
-    x,y = [],[]
 
     plt.ion()
 
@@ -47,7 +46,17 @@ if __name__ == "__main__":
     else:
         Grid_Size = 100
 
+
+
     system = N_Body.N_Body(Grid_Size ,mode1)  # pass in the mode and GS
+
+    system.populate_real_space_list()
+
+    system.generate_softened_potential_matrix()
+
+    x = [None]*len(system.real_space_list)
+    y = [None]*len(system.real_space_list)
+
 
 
 
@@ -55,49 +64,39 @@ if __name__ == "__main__":
 
         for i in range(len(system.real_space_list)):
 
-           # print(system.real_space_list[i].position_x)
-
-
-            x.append(system.real_space_list[i].position_x)
-            y.append(system.real_space_list[i].position_y)
-
-
-
+            x[i] = system.real_space_list[i].position_x
+            y[i] = system.real_space_list[i].position_y
 
     def drawA():
 
-        axes = plt.gca()
 
-        plt.plot(x, y, "b.")
+        fig, ax = plt.subplots(subplot_kw={'xlim': [0, Grid_Size],'ylim': [0, Grid_Size]})
 
-        plt.draw()
+        res = ax.scatter(x, y, marker=".")
 
-        axes = plt.gca()
-        axes.set_xlim([0, Grid_Size])
-        axes.set_ylim([0, Grid_Size])
+        #plt.plot(x,y,"b.")
+        #plt.draw()
 
-        plt.pause(.1)
+        #axes = plt.gca()
+        #axes.set_xlim([0, Grid_Size])
+        #axes.set_ylim([0, Grid_Size])
 
-        plt.clf()
+        plt.pause(.000001)
+
+        res.remove()
+
 
 
     def drawB():
 
-        axes = plt.gca()
-
-        #plt.plot(x, y, "b.")
 
         plt.imshow(system.density_matrix)
-
-        plt.draw()
 
         axes = plt.gca()
         axes.set_xlim([0, Grid_Size])
         axes.set_ylim([0, Grid_Size])
 
         plt.pause(.1)
-
-        plt.clf()
 
 
     def update_system():
@@ -111,9 +110,6 @@ if __name__ == "__main__":
         convert_positions_to_list()
 
 
-    system.populate_real_space_list()
-
-    system.generate_softened_potential_matrix()
 
     while(True):
         update_system()
@@ -122,4 +118,6 @@ if __name__ == "__main__":
             drawA()
         else:
             drawB()
+
+
 

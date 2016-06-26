@@ -25,10 +25,6 @@ class N_Body:
 
         self.softened_potential_matrix = np.zeros((self.Grid_Size, self.Grid_Size)) # this stores the S potential matrix
 
-        self.epsilon = 0.1
-
-        #The cut off radius before we use the softening potential is sqrt(2)
-
         self.periodic = True
         #Change this value to change to the system to periodic
 
@@ -91,9 +87,6 @@ class N_Body:
 
 
     def generate_softened_potential_matrix(self):
-
-        #Change i from 0 -> 7 to use negitives
-
 
         for i in range(0,self.Grid_Size / 2):
             for j in range(0, self.Grid_Size / 2):
