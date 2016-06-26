@@ -8,12 +8,12 @@ import random as rand
 class N_Body:
 
 
-    def __init__(self, mode = 1):
+    def __init__(self, GS,  mode = 1):
 
 
         self.Number_of_particles = 100  #Number of particles
 
-        self.Grid_Size = 8 #The grid is this number on each side
+        self.Grid_Size = GS #The grid is this number on each side
 
         self.dt = 0.05
 
@@ -86,7 +86,7 @@ class N_Body:
 
             self.density_matrix[round_x][round_y] = self.density_matrix[round_x][round_y] + 1
             #This creates the density matrix
-        print self.real_space_list[1].position_x
+        #print self.real_space_list[1].position_x
 
 
 
