@@ -81,7 +81,7 @@ if __name__ == "__main__":
         #axes.set_xlim([0, Grid_Size])
         #axes.set_ylim([0, Grid_Size])
 
-        plt.pause(.000001)
+        plt.pause(.01)
 
         res.remove()
 

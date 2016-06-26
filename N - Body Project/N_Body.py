@@ -25,7 +25,7 @@ class N_Body:
 
         self.softened_potential_matrix = np.zeros((self.Grid_Size, self.Grid_Size)) # this stores the S potential matrix
 
-        self.periodic = True
+        self.periodic = False
         #Change this value to change to the system to periodic
 
         self.mode = mode
@@ -44,8 +44,8 @@ class N_Body:
             self.real_space_list.append(particle.particle(1, self.Grid_Size/2.0, self.Grid_Size/2.0))
 
         if(self.mode == 2):
-            self.real_space_list.append(particle.particle(1, self.Grid_Size / 3.0 , self.Grid_Size / 3.0))
-            self.real_space_list.append(particle.particle(1,2*self.Grid_Size / 3.0, 2*self.Grid_Size / 3.0))
+            self.real_space_list.append(particle.particle(1, self.Grid_Size / 3.0 , self.Grid_Size / 2.0))
+            self.real_space_list.append(particle.particle(1, self.Grid_Size - self.Grid_Size / 3.0, self.Grid_Size / 2.0))
 
         if(self.mode == 3):
 
@@ -330,25 +330,30 @@ class N_Body:
                     while (self.real_space_list[i].position_x <= 0):
                         del self.real_space_list[i]
                         n = n - 1
-                        # i = i-1
-                        deleted = True  # break
+                        i = i-1
+                        deleted = True
+                        break
 
                     while (self.real_space_list[i].position_x >= self.Grid_Size):
                         del self.real_space_list[i]
                         n = n - 1
-                        # i = i - 1
-                        deleted = True  # ; break
+                        i = i - 1
+                        deleted = True
+                        break
                     while (self.real_space_list[i].position_y <= 0):
                         del self.real_space_list[i]
                         n = n - 1
-                        # i = i - 1
-                        deleted = True  # break
+                        i = i - 1
+                        deleted = True
+                        break
                     while (self.real_space_list[i].position_y >= self.Grid_Size):
                         del self.real_space_list[i]
                         n = n - 1
-                        # i = i - 1
-                        deleted = True  # break
+                        i = i - 1
+                        deleted = True
+                        break
                     if deleted:
+                        print "del"
                         break
 
 
