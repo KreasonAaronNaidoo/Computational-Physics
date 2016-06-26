@@ -23,14 +23,26 @@ if __name__ == "__main__":
 
     print
     print "Please select an output mode: "
-    print("Mode 1: Display actual position data, this mode is buggy ")
-    print("Mode 2: Display an approximation of the actual positions in the form of a density grid, this mode is slightly less buggy")
+    print("Mode 1: Display actual position data")
+    print("Mode 2: Display an approximation of the actual positions in the form of a density grid, this mode is buggy")
     print
     user2 = input("Please input the display mode:  ")
 
     print
 
     mode2 = int(user2)
+
+
+    print
+    print "Please select periodicity mode: "
+    print("Mode 1: Periodic environment ")
+    print("Mode 2: Non - periodic environment")
+    print
+    user3 = input("Please input the periodicity mode:  ")
+
+    print
+
+    mode3 = int(user3)
 
 
     Grid_Size = 0
@@ -48,7 +60,7 @@ if __name__ == "__main__":
 
 
 
-    system = N_Body.N_Body(Grid_Size ,mode1)  # pass in the mode and GS
+    system = N_Body.N_Body(Grid_Size ,mode1, mode3)  # pass in the mode and GS
 
     system.populate_real_space_list()
 
@@ -70,7 +82,8 @@ if __name__ == "__main__":
     def drawA():
 
 
-        fig, ax = plt.subplots(subplot_kw={'xlim': [0, Grid_Size],'ylim': [0, Grid_Size]})
+        fig,ax = plt.subplots(subplot_kw={'xlim': [0, Grid_Size],'ylim': [0, Grid_Size]})
+        ax.set_title('N - Body Simulation')
 
         res = ax.scatter(x, y, marker=".")
 

@@ -8,10 +8,10 @@ import random as rand
 class N_Body:
 
 
-    def __init__(self, GS,  mode = 1):
+    def __init__(self, GS, mode, ped):
 
 
-        self.Number_of_particles = 100  #Number of particles
+        self.Number_of_particles = 500  #Number of particles
 
         self.Grid_Size = GS #The grid is this number on each side
 
@@ -25,7 +25,11 @@ class N_Body:
 
         self.softened_potential_matrix = np.zeros((self.Grid_Size, self.Grid_Size)) # this stores the S potential matrix
 
-        self.periodic = False
+        if(ped == 1):
+            self.periodic = True
+        else:
+            self.periodic = False
+
         #Change this value to change to the system to periodic
 
         self.mode = mode
@@ -44,8 +48,8 @@ class N_Body:
             self.real_space_list.append(particle.particle(1, self.Grid_Size/2.0, self.Grid_Size/2.0))
 
         if(self.mode == 2):
-            self.real_space_list.append(particle.particle(1, self.Grid_Size / 3.0 , self.Grid_Size / 2.0))
-            self.real_space_list.append(particle.particle(1, self.Grid_Size - self.Grid_Size / 3.0, self.Grid_Size / 2.0))
+            self.real_space_list.append(particle.particle(1, self.Grid_Size / 3.0 , self.Grid_Size / 3.0))
+            self.real_space_list.append(particle.particle(1, self.Grid_Size - self.Grid_Size / 3.0, self.Grid_Size - self.Grid_Size / 3.0))
 
         if(self.mode == 3):
 
