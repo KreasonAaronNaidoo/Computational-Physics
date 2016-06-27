@@ -86,7 +86,6 @@ class N_Body:
 
             self.density_matrix[round_x][round_y] = self.density_matrix[round_x][round_y] + 1
             #This creates the density matrix
-        #print self.real_space_list[1].position_x
 
 
 
@@ -144,8 +143,6 @@ class N_Body:
 
     def update_particle_positions(self):
 
-        # print self.density_matrix
-        # print self.potential_matrix
 
         i = 0
         while (i < len(self.real_space_list) - 1):
