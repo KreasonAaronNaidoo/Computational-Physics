@@ -1,4 +1,3 @@
-
 import particle
 import numpy as np
 import random as rand
@@ -293,13 +292,13 @@ class N_Body:
 
                 if (self.periodic == True):
 
-                    while (self.real_space_list[i].position_x <= 0):  # put in =
+                    while (self.real_space_list[i].position_x <= 0):
                         self.real_space_list[i].position_x = self.Grid_Size + self.real_space_list[i].position_x
 
                     while (self.real_space_list[i].position_x >= self.Grid_Size):
                         self.real_space_list[i].position_x = self.real_space_list[i].position_x - self.Grid_Size
 
-                    while (self.real_space_list[i].position_y <= 0):  # put in =
+                    while (self.real_space_list[i].position_y <= 0):
                         self.real_space_list[i].position_y = self.Grid_Size + self.real_space_list[i].position_y
 
                     while (self.real_space_list[i].position_y >= self.Grid_Size):
@@ -310,7 +309,7 @@ class N_Body:
                     while (self.real_space_list[i].position_x <= 0):
                         del self.real_space_list[i]
                         n = n - 1
-                        i = i-1
+                        i = i - 1
                         deleted = True
                         break
 
@@ -332,7 +331,7 @@ class N_Body:
                         i = i - 1
                         deleted = True
                         break
-                    if deleted:
+                    if (deleted == True):
                         break
 
 
