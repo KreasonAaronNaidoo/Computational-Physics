@@ -12,9 +12,11 @@ if __name__ == "__main__":
     print
     print("Simulations modes:")
     print
-    print("Mode 1: Single particla starting at rest")
+    print("Mode 1: Single particla starting at rest ")
     print("Mode 2: Two particles starting rest ")
-    print("Mode 3: Full N-body simulation")
+    print("Mode 3: Three particles starting rest ")
+    print("Mode 4: Four particles starting rest ")
+    print("Mode 5: Full N-body simulation")
     print
     user1 = input("Please input the simulation mode:  ")
 
@@ -54,9 +56,7 @@ if __name__ == "__main__":
 
 
 
-    if(mode1 == 1):
-        Grid_Size = 8
-    elif(mode1 == 2):
+    if(mode1 == 1 or mode1 == 2 or mode1 == 3 or mode1 == 4):
         Grid_Size = 8
     else:
         Grid_Size = 100
@@ -125,7 +125,7 @@ if __name__ == "__main__":
         fig, ax = plt.subplots(subplot_kw={'xlim': [0, Grid_Size], 'ylim': [0, Grid_Size]})
         ax.set_title('N - Body Simulation')
 
-        ani = animation.FuncAnimation(fig, drawA, interval=10)
+        ani = animation.FuncAnimation(fig, drawA, interval=16)
 
         plt.show()
 

@@ -8,12 +8,12 @@ import random as rand
 class N_Body:
 
 
-    def __init__(self, GS, mode, ped):
+    def __init__(self):
 
 
         self.Number_of_particles = 500  #Number of particles
 
-        self.Grid_Size = GS #The grid is this number on each side
+        self.Grid_Size = 8 #The grid is this number on each side
 
         self.dt = 0.01
 
@@ -25,52 +25,21 @@ class N_Body:
 
         self.softened_potential_matrix = np.zeros((self.Grid_Size, self.Grid_Size)) # this stores the S potential matrix
 
-        if(ped == 1):
-            self.periodic = True
-        else:
-            self.periodic = False
-
-        #Change this value to change to the system to periodic
-
-        self.mode = mode
-
-
+        self.periodic = True
 
 
 
 
     def populate_real_space_list(self):
 
+        for x in range(0, self.Number_of_particles):
+            temp_x = rand.uniform(0, self.Grid_Size - 1)
+            temp_y = rand.uniform(0, self.Grid_Size - 1)
 
-        if(self.mode == 1):
-            self.real_space_list.append(particle.particle(1, self.Grid_Size/2.0, self.Grid_Size/2.0))
+            temp_particle = particle.particle(1, temp_x, temp_y) # we are using the uniform mass of 1
 
-        if(self.mode == 2):
-            self.real_space_list.append(particle.particle(1, self.Grid_Size / 3.0 , self.Grid_Size / 3.0))
-            self.real_space_list.append(particle.particle(1, self.Grid_Size - self.Grid_Size / 3.0, self.Grid_Size - self.Grid_Size / 3.0))
-
-        if (self.mode == 3):
-            self.real_space_list.append(particle.particle(1, self.Grid_Size / 3.0, self.Grid_Size / 3.0))
-            self.real_space_list.append(particle.particle(1, self.Grid_Size - self.Grid_Size / 3.0, self.Grid_Size - self.Grid_Size / 3.0))
-            self.real_space_list.append(particle.particle(1, self.Grid_Size / 3.0, self.Grid_Size - self.Grid_Size / 3.0))
-
-        if (self.mode == 4):
-            self.real_space_list.append(particle.particle(1, self.Grid_Size / 3.0, self.Grid_Size / 3.0))
-            self.real_space_list.append(particle.particle(1, self.Grid_Size - self.Grid_Size / 3.0, self.Grid_Size - self.Grid_Size / 3.0))
-            self.real_space_list.append(particle.particle(1, self.Grid_Size / 3.0, self.Grid_Size - self.Grid_Size / 3.0))
-            self.real_space_list.append(particle.particle(1, self.Grid_Size - self.Grid_Size / 3.0, self.Grid_Size / 3.0))
-
-
-        if(self.mode == 5):
-
-            for x in range(0, self.Number_of_particles):
-                temp_x = rand.uniform(0, self.Grid_Size - 1)
-                temp_y = rand.uniform(0, self.Grid_Size - 1)
-
-                temp_particle = particle.particle(1, temp_x, temp_y) # we are using the uniform mass of 1
-
-                self.real_space_list.append(temp_particle)
-                #adds the particle to the list of particles at that point in the real space matrix
+            self.real_space_list.append(temp_particle)
+            #adds the particle to the list of particles at that point in the real space matrix
 
 
 
